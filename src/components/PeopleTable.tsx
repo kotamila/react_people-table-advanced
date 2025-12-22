@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Person } from '../types';
 
 interface Props {
@@ -34,6 +36,8 @@ export const PeopleTable: React.FC<Props> = ({
   currentSort,
   currentOrder,
 }) => {
+  const { search } = useLocation();
+
   const renderLinkOrText = (
     person: Person | null,
     field: 'mother' | 'father',
@@ -41,7 +45,11 @@ export const PeopleTable: React.FC<Props> = ({
     const data = person?.[field];
 
     if (data && typeof data === 'object' && data.id) {
-      return <a href={`#/people/${data.slug || data.id}`}>{data.name}</a>;
+      return (
+        <Link to={{ pathname: `/people/${data.slug || data.id}`, search }}>
+          {data.name}
+        </Link>
+      );
     }
 
     if (typeof data === 'object' && data !== null) {
@@ -92,7 +100,11 @@ export const PeopleTable: React.FC<Props> = ({
             className={person.sex === 'f' ? 'has-text-danger' : ''}
           >
             <td>
-              <a href={`#/people/${person.slug || person.id}`}>{person.name}</a>
+              <Link
+                to={{ pathname: `/people/${person.slug || person.id}`, search }}
+              >
+                {person.name}
+              </Link>
             </td>
             <td>{person.sex}</td>
             <td>{person.born}</td>
