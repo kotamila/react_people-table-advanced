@@ -26,7 +26,10 @@ export const Navbar = () => {
           <Link
             aria-current={isPeopleActive ? 'page' : undefined}
             className={`navbar-item ${isPeopleActive ? 'has-background-grey-lighter' : ''}`}
-            to="/people"
+            to={{
+              pathname: '/people',
+              search: location.search,
+            }}
           >
             People
           </Link>
