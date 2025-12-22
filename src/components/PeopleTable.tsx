@@ -39,24 +39,29 @@ export const PeopleTable: React.FC<Props> = ({
   const { search } = useLocation();
 
   const renderLinkOrText = (
-    person: Person | null,
+    person: Person,
     field: 'mother' | 'father',
   ): JSX.Element | string => {
-    const data = person?.[field];
+    const parentObj = field === 'mother' ? person.mother : person.father;
+    const parentName =
+      field === 'mother' ? person.motherName : person.fatherName;
 
-    if (data && typeof data === 'object' && data.id) {
+    if (parentObj && parentObj.id) {
       return (
-        <Link to={{ pathname: `/people/${data.slug || data.id}`, search }}>
-          {data.name}
+        <Link
+          to={{ pathname: `/people/${parentObj.slug || parentObj.id}`, search }}
+          key={parentObj.id}
+        >
+          {parentObj.name}
         </Link>
       );
     }
 
-    if (typeof data === 'object' && data !== null) {
-      return data.name || '-';
+    if (parentName) {
+      return parentName;
     }
 
-    return data || '-';
+    return '-';
   };
 
   const renderSortHeader = (field: string, title: string) => (
@@ -73,6 +78,7 @@ export const PeopleTable: React.FC<Props> = ({
           </span>
         </a>
       </span>
+      data
     </th>
   );
 
