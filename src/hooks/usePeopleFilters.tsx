@@ -19,15 +19,15 @@ export const usePeopleFilters = (): PeopleFilterHook => {
   const query = searchParams.get('query') || '';
   const sex = searchParams.get('sex');
   const centuries = searchParams.getAll('centuries');
-
   const allCenturies = useMemo(() => ['16', '17', '18', '19', '20'], []);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = event.target.value.trim();
+    const value = event.target.value;
+    const params = getSearchWith(searchParams, {
+      query: value.trim() || null,
+    });
 
-    const paramsToUpdate = newQuery ? { query: newQuery } : { query: null };
-
-    setSearchParams(getSearchWith(searchParams, paramsToUpdate));
+    setSearchParams(params);
   };
 
   const handleCenturyToggle = (century: string) => {
