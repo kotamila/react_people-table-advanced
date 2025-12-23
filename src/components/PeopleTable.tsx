@@ -83,7 +83,6 @@ export const PeopleTable: React.FC<Props> = ({
           </span>
         </button>
       </span>
-      data
     </th>
   );
 
