@@ -65,10 +65,15 @@ export const PeopleTable: React.FC<Props> = ({
   };
 
   const renderSortHeader = (field: string, title: string) => (
-    <th>
+    <th key={field}>
       <span className="is-flex is-flex-wrap-nowrap">
         {title}
-        <a onClick={() => onSortChange(field)} className="has-text-danger">
+
+        <button
+          type="button"
+          onClick={() => onSortChange(field)}
+          className="has-text-danger"
+        >
           <span className="icon">
             <SortIcon
               field={field}
@@ -76,7 +81,7 @@ export const PeopleTable: React.FC<Props> = ({
               currentOrder={currentOrder}
             />
           </span>
-        </a>
+        </button>
       </span>
       data
     </th>
@@ -93,8 +98,8 @@ export const PeopleTable: React.FC<Props> = ({
           {renderSortHeader('sex', 'Sex')}
           {renderSortHeader('born', 'Born')}
           {renderSortHeader('died', 'Died')}
-          <th>Mother</th>
-          <th>Father</th>
+          <th key="mother">Mother</th>
+          <th key="father">Father</th>
         </tr>
       </thead>
 
@@ -107,7 +112,10 @@ export const PeopleTable: React.FC<Props> = ({
           >
             <td>
               <Link
-                to={{ pathname: `/people/${person.slug || person.id}`, search }}
+                to={{
+                  pathname: `/people/${person.slug || person.id}`,
+                  search,
+                }}
               >
                 {person.name}
               </Link>
