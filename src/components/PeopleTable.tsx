@@ -115,6 +115,7 @@ export const PeopleTable: React.FC<Props> = ({
                   pathname: `/people/${person.slug || person.id}`,
                   search,
                 }}
+                className={person.sex === 'f' ? 'has-text-danger' : ''}
               >
                 {person.name}
               </Link>
