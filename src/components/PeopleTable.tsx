@@ -61,6 +61,10 @@ export const PeopleTable: React.FC<Props> = ({
     }
 
     if (parentName) {
+      if (field === 'mother') {
+        return <span className="has-text-danger">{parentName}</span>;
+      }
+
       return parentName;
     }
 
@@ -114,10 +118,7 @@ export const PeopleTable: React.FC<Props> = ({
             <tr
               data-cy="person"
               key={person.id}
-              className={`
-                ${person.sex === 'f' ? 'has-text-danger' : ''}
-                ${isSelected ? 'has-background-warning' : ''}
-              `}
+              className={isSelected ? 'has-background-warning' : ''}
             >
               <td>
                 <Link
