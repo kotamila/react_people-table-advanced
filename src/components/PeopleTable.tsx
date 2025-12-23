@@ -5,6 +5,7 @@ import { Person } from '../types';
 
 interface Props {
   people: Person[];
+  selectedSlug?: string;
   onSortChange: (field: string) => void;
   currentSort: string | null;
   currentOrder: string | null;
@@ -32,6 +33,7 @@ const SortIcon = ({
 
 export const PeopleTable: React.FC<Props> = ({
   people,
+  selectedSlug,
   onSortChange,
   currentSort,
   currentOrder,
@@ -50,6 +52,7 @@ export const PeopleTable: React.FC<Props> = ({
       return (
         <Link
           to={{ pathname: `/people/${parentObj.slug || parentObj.id}`, search }}
+          className={parentObj.sex === 'f' ? 'has-text-danger' : ''}
           key={parentObj.id}
         >
           {parentObj.name}
@@ -103,30 +106,38 @@ export const PeopleTable: React.FC<Props> = ({
       </thead>
 
       <tbody>
-        {people.map(person => (
-          <tr
-            data-cy="person"
-            key={person.id}
-            className={person.sex === 'f' ? 'has-text-danger' : ''}
-          >
-            <td>
-              <Link
-                to={{
-                  pathname: `/people/${person.slug || person.id}`,
-                  search,
-                }}
-                className={person.sex === 'f' ? 'has-text-danger' : ''}
-              >
-                {person.name}
-              </Link>
-            </td>
-            <td>{person.sex}</td>
-            <td>{person.born}</td>
-            <td>{person.died}</td>
-            <td>{renderLinkOrText(person, 'mother')}</td>
-            <td>{renderLinkOrText(person, 'father')}</td>
-          </tr>
-        ))}
+        {people.map(person => {
+          const isSelected =
+            selectedSlug === (person.slug || person.id.toString());
+
+          return (
+            <tr
+              data-cy="person"
+              key={person.id}
+              className={`
+                ${person.sex === 'f' ? 'has-text-danger' : ''}
+                ${isSelected ? 'has-background-warning' : ''}
+              `}
+            >
+              <td>
+                <Link
+                  to={{
+                    pathname: `/people/${person.slug || person.id}`,
+                    search,
+                  }}
+                  className={person.sex === 'f' ? 'has-text-danger' : ''}
+                >
+                  {person.name}
+                </Link>
+              </td>
+              <td>{person.sex}</td>
+              <td>{person.born}</td>
+              <td>{person.died}</td>
+              <td>{renderLinkOrText(person, 'mother')}</td>
+              <td>{renderLinkOrText(person, 'father')}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

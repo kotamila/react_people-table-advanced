@@ -6,10 +6,13 @@ import { getPeople } from '../api';
 import { Person } from '../types';
 import { useSearchParams } from 'react-router-dom';
 import { getSearchWith } from '../utils/searchHelper';
+import { useParams } from 'react-router-dom';
 
 type Status = 'initial' | 'loading' | 'loaded' | 'error';
 
 export const PeoplePage = () => {
+  const { slug } = useParams();
+
   const [people, setPeople] = useState<Person[]>([]);
   const [status, setStatus] = useState<Status>('initial');
   const [errorMessage, setErrorMessage] = useState('');
@@ -123,6 +126,7 @@ export const PeoplePage = () => {
                 (sortedPeople.length > 0 ? (
                   <PeopleTable
                     people={sortedPeople}
+                    selectedSlug={slug}
                     onSortChange={handleSortChange}
                     currentSort={sort}
                     currentOrder={order}
