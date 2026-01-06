@@ -58,38 +58,39 @@ export const PeopleFilters = () => {
         <div className="level is-flex-grow-1 is-mobile" data-cy="CenturyFilter">
           <div className="level-left">
             {allCenturies.map(century => (
-              <a
+              <button
+                type="button"
                 key={century}
                 data-cy="century"
                 className={`button mr-1 ${centuries.includes(century) ? 'is-info' : ''}`}
                 onClick={() => handleCenturyToggle(century)}
               >
                 {century}
-              </a>
+              </button>
             ))}
           </div>
 
           <div className="level-right ml-4">
-            <a
+            <button
+              type="button"
               data-cy="centuryALL"
-              className="button is-success is-outlined"
-              href="#/people"
+              className={`button is-success is-outlined ${centuries.length === allCenturies.length ? 'is-active' : ''}`}
               onClick={handleCenturyAll}
             >
               All
-            </a>
+            </button>
           </div>
         </div>
       </div>
 
       <div className="panel-block">
-        <a
+        <button
+          type="button"
           className="button is-link is-outlined is-fullwidth"
-          href="#/people"
           onClick={handleResetAll}
         >
           Reset all filters
-        </a>
+        </button>
       </div>
     </nav>
   );
