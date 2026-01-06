@@ -40,6 +40,10 @@ export const PeopleTable: React.FC<Props> = ({
 }) => {
   const { search } = useLocation();
 
+  const findParentInList = (name: string | null) => {
+    return people.find(p => p.name === name);
+  };
+
   const renderLinkOrText = (
     person: Person,
     field: 'mother' | 'father',
@@ -48,24 +52,33 @@ export const PeopleTable: React.FC<Props> = ({
     const parentName =
       field === 'mother' ? person.motherName : person.fatherName;
 
-    if (parentObj && parentObj.id) {
+    const linkedPerson = findParentInList(parentName);
+
+    const target = linkedPerson || parentObj;
+
+    if (target && (target.slug || target.id)) {
       return (
         <Link
-          to={{ pathname: `/people/${parentObj.slug || parentObj.id}`, search }}
-          className={parentObj.sex === 'f' ? 'has-text-danger' : ''}
-          key={parentObj.id}
+          to={{
+            pathname: `/people/${target.slug || target.id}`,
+            search,
+          }}
+          className={
+            field === 'mother' || target.sex === 'f' ? 'has-text-danger' : ''
+          }
+          key={target.id}
         >
-          {parentObj.name}
+          {parentName}
         </Link>
       );
     }
 
     if (parentName) {
-      if (field === 'mother') {
-        return <span className="has-text-danger">{parentName}</span>;
-      }
-
-      return parentName;
+      return (
+        <span className={field === 'mother' ? 'has-text-danger' : ''}>
+          {parentName}
+        </span>
+      );
     }
 
     return '-';
@@ -75,11 +88,11 @@ export const PeopleTable: React.FC<Props> = ({
     <th key={field}>
       <span className="is-flex is-flex-wrap-nowrap">
         {title}
-
         <button
           type="button"
           onClick={() => onSortChange(field)}
-          className="has-text-danger"
+          className="button is-ghost p-0 h-auto has-text-danger ml-1"
+          style={{ border: 'none', background: 'none' }}
         >
           <span className="icon">
             <SortIcon
